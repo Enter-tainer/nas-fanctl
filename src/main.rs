@@ -1,7 +1,7 @@
 use std::{
     fs::{read_to_string, File},
     io::Write,
-    process::{Command, self},
+    process::{self, Command},
     thread::sleep,
     time::Duration,
 };
@@ -147,6 +147,7 @@ fn main() {
         pwm_path,
         disks,
         fan_path,
+        interval,
     } = cli::Args::parse();
     DISKS.get_or_init(move || disks);
     let pwm_enable = get_pwm_enable(&pwm_path);
@@ -168,6 +169,6 @@ fn main() {
         let pwm_value = get_pwm_value_by_temp(*max_temp);
         set_pwm(&pwm_path, pwm_value);
         println!("{}", "=".repeat(40));
-        sleep(Duration::from_secs(10));
+        sleep(Duration::from_secs(interval.try_into().unwrap()));
     }
 }

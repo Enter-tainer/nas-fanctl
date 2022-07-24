@@ -10,3 +10,4 @@ regex = "*"
 clap = { version = "3.2.14", features = ["derive"] }
 once_cell = "1.13.0"
 ctrlc = "3.2.2"
+itertools = "0.10.3"

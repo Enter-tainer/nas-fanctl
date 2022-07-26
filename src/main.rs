@@ -61,21 +61,14 @@ fn set_pwm_to_manual(path: &str) {
     set_pwm_enable(path, "1");
 }
 
+fn temp_speed_curve(temp: f64) -> f64 {
+    // let work = (temp - temp_min) as f64 / (temp_max - temp_min) as f64;
+    // (3800.0 * work + 1000.0).clamp(1000.0, 4800.0)
+    20.0 * (1.0/10.0 * temp).exp()
+}
+
 fn get_pwm_value_by_temp(pwm_to_speed: &Interpolator, temp: i32) -> (i32, i32) {
-    // 温度 30 以下，pwm = 0, 60 以上 pwm = 255
-    // 中间部分线性
-    let temp_min = 30;
-    let temp_max = 60;
-    let pwm_min = 0;
-    let pwm_max = 255;
-    if temp <= temp_min {
-        return (pwm_min, 1000);
-    }
-    if temp >= temp_max {
-        return (pwm_max, 4800);
-    }
-    let work = (temp - temp_min) as f64 / (temp_max - temp_min) as f64;
-    let speed = (3800.0 * work + 1000.0).clamp(1000.0, 4800.0);
+    let speed = temp_speed_curve(temp as f64).clamp(1000.0, 4800.0);
     let pwm = pwm_to_speed.estimate_x(speed).clamp(0.0, 255.0);
     (pwm as i32, speed as i32)
 }

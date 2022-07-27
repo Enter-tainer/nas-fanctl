@@ -64,7 +64,7 @@ fn set_pwm_to_manual(path: &str) {
 fn temp_speed_curve(temp: f64) -> f64 {
     // let work = (temp - temp_min) as f64 / (temp_max - temp_min) as f64;
     // (3800.0 * work + 1000.0).clamp(1000.0, 4800.0)
-    20.0 * (1.0/10.0 * temp).exp()
+    17.0 * (1.0 / 10.0 * temp).exp()
 }
 
 fn get_pwm_value_by_temp(pwm_to_speed: &Interpolator, temp: i32) -> (i32, i32) {
@@ -114,9 +114,7 @@ fn main() {
     );
     println!("temp\t(pwm, speed)");
     for i in 30..60 {
-        if i % 2 == 0 {
-            println!("{}\t{:?}", i, get_pwm_value_by_temp(&pwm_to_speed, i));
-        }
+        println!("{}\t{:?}", i, get_pwm_value_by_temp(&pwm_to_speed, i));
     }
     let Args {
         pwm_path,

@@ -9,7 +9,11 @@ pub struct Args {
     pub pwm_path: String,
     #[clap(short, long, help("fan path. e.g. /sys/class/hwmon/hwmon2/fan1_input"))]
     pub fan_path: String,
-    #[clap(short, long, default_value("60"), help("the interval between checking in seconds"))]
+    #[clap(
+        short,
+        long,
+        default_value("60"),
+        help("the interval between checking in seconds")
+    )]
     pub interval: usize,
-    
 }

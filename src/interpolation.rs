@@ -9,7 +9,7 @@ pub struct Interpolator {
 fn get_y_on_line(slope: f64, base: (f64, f64), x: f64) -> f64 {
     let (bx, by) = base;
     if bx == x {
-      return by;
+        return by;
     }
     // by - y = (bx - x) * slope
     // y = by - (bx - x) * slope
@@ -19,15 +19,14 @@ fn get_y_on_line(slope: f64, base: (f64, f64), x: f64) -> f64 {
 fn get_x_on_line(slope: f64, base: (f64, f64), y: f64) -> f64 {
     let (bx, by) = base;
     if by == y {
-      return bx;
+        return bx;
     }
     // by - y = (bx - x) * slope
     // x = bx - (by - y) / slope
     bx - (by - y) / slope
 }
 
-impl Interpolator
-{
+impl Interpolator {
     fn get_slope_inner(&self, p1: usize, p2: usize) -> f64 {
         let p1_x = *self.x.get(p1).unwrap();
         let p1_y = *self.y.get(p1).unwrap();
@@ -60,33 +59,21 @@ impl Interpolator
         // pos..n item > y
         let slope = self.get_slope(pos as i64);
         let base = if pos == self.y.len() {
-            (
-                *self.x.last().unwrap(),
-                *self.y.last().unwrap()
-            )
+            (*self.x.last().unwrap(), *self.y.last().unwrap())
         } else {
-            (
-                *self.x.get(pos).unwrap(),
-                *self.y.get(pos).unwrap()
-            )
+            (*self.x.get(pos).unwrap(), *self.y.get(pos).unwrap())
         };
         get_x_on_line(slope, base, y)
     }
-    pub fn estimate_y(&self, x: f64) -> f64  {
+    pub fn estimate_y(&self, x: f64) -> f64 {
         let pos = self.x.partition_point(|&item| item <= x);
         // 0..pos item <= x
         // pos..n item > x
         let slope = self.get_slope(pos as i64);
         let base = if pos == self.x.len() {
-            (
-                *self.x.last().unwrap(),
-                *self.y.last().unwrap()
-            )
+            (*self.x.last().unwrap(), *self.y.last().unwrap())
         } else {
-            (
-                *self.x.get(pos).unwrap(),
-                *self.y.get(pos).unwrap()
-            )
+            (*self.x.get(pos).unwrap(), *self.y.get(pos).unwrap())
         };
         get_y_on_line(slope, base, x)
     }
